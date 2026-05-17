@@ -118,6 +118,21 @@ public class AuthService {
         return toResponse(user);
     }
 
+    @Transactional
+    public void resendVerification(ResendVerificationRequest req) {
+        userRepository.findByEmail(req.email().toLowerCase()).ifPresent(user -> {
+            if (user.isEmailVerified()) {
+                throw new ApiException(HttpStatus.BAD_REQUEST, "Email already verified");
+            }
+            if (user.getVerificationToken() == null) {
+                user.setVerificationToken(UUID.randomUUID().toString());
+                userRepository.save(user);
+            }
+            emailService.sendVerification(user.getEmail(),
+                    appProperties.getFrontendUrl() + "/verify-email?token=" + user.getVerificationToken());
+        });
+    }
+
     public UserResponse me(UserPrincipal principal) {
         return userRepository.findById(principal.getId()).map(this::toResponse).orElseThrow();
     }

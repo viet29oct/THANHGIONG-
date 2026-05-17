@@ -14,5 +14,7 @@ public class AuthDtos {
 
     public record ResetPasswordRequest(@NotBlank String token, @NotBlank @Size(min = 8) String password) {}
 
+    public record ResendVerificationRequest(@NotBlank @Email String email) {}
+
     public record UserResponse(Long id, String name, String email, String role, boolean emailVerified) {}
 }

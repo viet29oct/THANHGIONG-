@@ -55,6 +55,13 @@ public class AuthController {
         return authService.verifyEmail(token);
     }
 
+    /** Gửi lại email xác minh khi user không nhận được hoặc làm mất link. */
+    @PostMapping("/resend-verification")
+    public ResponseEntity<Void> resendVerification(@Valid @RequestBody ResendVerificationRequest req) {
+        authService.resendVerification(req);
+        return ResponseEntity.ok().build();
+    }
+
     @GetMapping("/me")
     public UserResponse me(@AuthenticationPrincipal UserPrincipal principal) {
         return authService.me(principal != null ? principal : SecurityUtils.currentUser());

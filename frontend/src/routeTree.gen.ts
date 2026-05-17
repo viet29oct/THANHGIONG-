@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as VerifyEmailRouteImport } from './routes/verify-email'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as ProductsRouteImport } from './routes/products'
 import { Route as PaymentResultRouteImport } from './routes/payment-result'
@@ -21,6 +22,11 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ProductsSlugRouteImport } from './routes/products.$slug'
 
+const VerifyEmailRoute = VerifyEmailRouteImport.update({
+  id: '/verify-email',
+  path: '/verify-email',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const RegisterRoute = RegisterRouteImport.update({
   id: '/register',
   path: '/register',
@@ -88,6 +94,7 @@ export interface FileRoutesByFullPath {
   '/payment-result': typeof PaymentResultRoute
   '/products': typeof ProductsRouteWithChildren
   '/register': typeof RegisterRoute
+  '/verify-email': typeof VerifyEmailRoute
   '/products/$slug': typeof ProductsSlugRoute
 }
 export interface FileRoutesByTo {
@@ -101,6 +108,7 @@ export interface FileRoutesByTo {
   '/payment-result': typeof PaymentResultRoute
   '/products': typeof ProductsRouteWithChildren
   '/register': typeof RegisterRoute
+  '/verify-email': typeof VerifyEmailRoute
   '/products/$slug': typeof ProductsSlugRoute
 }
 export interface FileRoutesById {
@@ -115,6 +123,7 @@ export interface FileRoutesById {
   '/payment-result': typeof PaymentResultRoute
   '/products': typeof ProductsRouteWithChildren
   '/register': typeof RegisterRoute
+  '/verify-email': typeof VerifyEmailRoute
   '/products/$slug': typeof ProductsSlugRoute
 }
 export interface FileRouteTypes {
@@ -130,6 +139,7 @@ export interface FileRouteTypes {
     | '/payment-result'
     | '/products'
     | '/register'
+    | '/verify-email'
     | '/products/$slug'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -143,6 +153,7 @@ export interface FileRouteTypes {
     | '/payment-result'
     | '/products'
     | '/register'
+    | '/verify-email'
     | '/products/$slug'
   id:
     | '__root__'
@@ -156,6 +167,7 @@ export interface FileRouteTypes {
     | '/payment-result'
     | '/products'
     | '/register'
+    | '/verify-email'
     | '/products/$slug'
   fileRoutesById: FileRoutesById
 }
@@ -170,10 +182,18 @@ export interface RootRouteChildren {
   PaymentResultRoute: typeof PaymentResultRoute
   ProductsRoute: typeof ProductsRouteWithChildren
   RegisterRoute: typeof RegisterRoute
+  VerifyEmailRoute: typeof VerifyEmailRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/verify-email': {
+      id: '/verify-email'
+      path: '/verify-email'
+      fullPath: '/verify-email'
+      preLoaderRoute: typeof VerifyEmailRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/register': {
       id: '/register'
       path: '/register'
@@ -277,6 +297,7 @@ const rootRouteChildren: RootRouteChildren = {
   PaymentResultRoute: PaymentResultRoute,
   ProductsRoute: ProductsRouteWithChildren,
   RegisterRoute: RegisterRoute,
+  VerifyEmailRoute: VerifyEmailRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

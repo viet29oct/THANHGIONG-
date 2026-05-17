@@ -77,11 +77,20 @@ public class SecurityConfig {
             )
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                .requestMatchers("/api/v1/auth/register", "/api/v1/auth/login",
-                    "/api/v1/auth/logout", "/api/v1/auth/forgot-password", "/api/v1/auth/reset-password",
-                    "/api/v1/auth/verify-email", "/api/v1/auth/refresh").permitAll()
+                .requestMatchers(
+                    "/api/v1/auth/register",
+                    "/api/v1/auth/login",
+                    "/api/v1/auth/logout",
+                    "/api/v1/auth/forgot-password",
+                    "/api/v1/auth/reset-password",
+                    "/api/v1/auth/verify-email",
+                    "/api/v1/auth/resend-verification",
+                    "/api/v1/auth/refresh"
+                ).permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/v1/products", "/api/v1/products/**").permitAll()
+                // VNPay callbacks — không qua xác thực JWT
                 .requestMatchers("/api/v1/payments/webhook/**").permitAll()
+                .requestMatchers("/api/v1/payments/vnpay-ipn").permitAll()
                 .requestMatchers("/api/v1/admin/**").hasAnyRole("SUPER_ADMIN", "STAFF", "SUPPORT")
                 .anyRequest().authenticated())
             .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
