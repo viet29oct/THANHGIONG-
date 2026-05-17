@@ -1,0 +1,56 @@
+spring:
+  application:
+    name: licensing-api
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:licensing}?options=-c%20TimeZone%3DUTC
+    username: ${DB_USER:postgres}
+    password: ${DB_PASSWORD:postgres}
+    hikari:
+      connection-init-sql: SET TIME ZONE 'UTC'
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
+  flyway:
+    enabled: true
+  mail:
+    host: ${SMTP_HOST:localhost}
+    port: ${SMTP_PORT:587}
+    username: ${SMTP_USER:}
+    password: ${SMTP_PASSWORD:}
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.starttls.enable: true
+
+server:
+  port: ${SERVER_PORT:8080}
+  servlet:
+    context-path: /
+
+app:
+  frontend-url: ${FRONTEND_URL:http://localhost:5173}
+  jwt:
+    secret: vY2h8u9zK3mP5qR7tW1vX4yB6nN8mQ0pS2uU4wX6zZ8bA0cE2gH4jK6mN8pQ0rS2
+    access-expiration-ms: 900000
+    refresh-expiration-ms: 604800000
+  cookie:
+    secure: false
+    same-site: Lax
+    domain: ${COOKIE_DOMAIN:}
+  license:
+    aes-key: f7a2c4e6b8d0f2a4c6e8b0d2f4a6c8e0
+  reservation-minutes: 15
+  rate-limit:
+    requests-per-minute: 120
+  vnpay:
+    tmn-code: ${VNPAY_TMN_CODE:DEMO}
+    hash-secret: ${VNPAY_HASH_SECRET:DEMO_SECRET}
+    return-url: ${VNPAY_RETURN_URL:http://localhost:5173/payment-result}
+
+logging:
+  level:
+    com.thanhgiong: INFO
